@@ -6,9 +6,9 @@
       target="_blank"
     >{{video.channelTitle}}</a>
     <div class="info__statistics">
-      <span class="info__views">{{video.views}}</span>
-      <span class="info__like">{{video.like}}</span>
-      <span class="info__dislike">{{video.dislike}}</span>
+      <span class="info__views">{{video.views | formatNumber}}</span>
+      <span class="info__like">{{video.like | formatNumber}}</span>
+      <span class="info__dislike">{{video.dislike | formatNumber}}</span>
     </div>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
   name: "VideoInfo",
   props: {
     video: Object
+  },
+  filters: {
+    formatNumber(number) {
+      return Number(number).toLocaleString("pt-BR");
+    }
   }
 };
 </script>
