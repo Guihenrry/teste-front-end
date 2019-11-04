@@ -1,13 +1,17 @@
 <template>
-  <section class="video" v-if="video">
-    <div class="video__header">
-      <button class="video__back" @click="$router.go(-1)">Voltar</button>
-      <h1 class="video__title">{{video.title}}</h1>
-    </div>
-    <VideoPlayer :video-id="id" />
-    <VideoInfo :video="video" />
-    <VideoDescription :description="video.description" />
-  </section>
+  <div>
+    <AlertNotification :active="alertActive" :mensage="alertMensage" />
+    <BaseError v-if="error" />
+    <section class="video" v-if="video">
+      <div class="video__header">
+        <button class="video__back" @click="$router.go(-1)">Voltar</button>
+        <h1 class="video__title">{{video.title}}</h1>
+      </div>
+      <VideoPlayer :video-id="id" />
+      <VideoInfo :video="video" />
+      <VideoDescription :description="video.description" />
+    </section>
+  </div>
 </template>
 
 <script>
@@ -28,13 +32,23 @@ export default {
   },
   data() {
     return {
-      video: null
+      video: null,
+      error: false,
+      alertActive: false,
+      alertMensage: ""
     };
   },
   created() {
     this.getVideo();
   },
   methods: {
+    alert(mensage) {
+      this.alertMensage = mensage;
+      this.alertActive = true;
+      setTimeout(() => {
+        this.alertActive = false;
+      }, 5000);
+    },
     getVideo() {
       api
         .get(`/videos?id=${this.id}&part=snippet,statistics`)
@@ -49,6 +63,12 @@ export default {
             channelTitle: item.snippet.channelTitle,
             channelId: item.snippet.channelId
           };
+        })
+        .catch(() => {
+          this.error = true;
+          this.alert(
+            "Erro ao estabelecer conexão com o servidor. tente novamente mais tarde"
+          );
         });
     }
   }

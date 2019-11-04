@@ -1,5 +1,7 @@
 <template>
   <section>
+    <AlertNotification :active="alertActive" :mensage="alertMensage" />
+    <BaseError v-if="error" />
     <transition mode="out-in">
       <div v-if="videos && videos.length" class="list">
         <VideoListItem v-for="(video, index) in videos" :key="index" :video="video" />
@@ -26,7 +28,10 @@ export default {
       videos: null,
       nextPageToken: "",
       maxResults: 6,
-      loading: false
+      loading: false,
+      error: false,
+      alertActive: false,
+      alertMensage: ""
     };
   },
   computed: {
@@ -44,6 +49,13 @@ export default {
     this.getNextPageOnScroll();
   },
   methods: {
+    alert(mensage) {
+      this.alertMensage = mensage;
+      this.alertActive = true;
+      setTimeout(() => {
+        this.alertActive = false;
+      }, 5000);
+    },
     getVideos() {
       this.videos = null;
       api
@@ -53,6 +65,12 @@ export default {
         .then(response => {
           this.videos = response.data.items;
           this.nextPageToken = response.data.nextPageToken;
+        })
+        .catch(() => {
+          this.error = true;
+          this.alert(
+            "Erro ao estabelecer conexão com o servidor. tente novamente mais tarde"
+          );
         });
     },
     isBottomOfWindow() {
@@ -75,6 +93,11 @@ export default {
               this.loading = false;
               this.videos = this.videos.concat(response.data.items);
               this.nextPageToken = response.data.nextPageToken;
+            })
+            .catch(() => {
+              this.alert(
+                "Erro ao estabelecer conexão com o servidor. tente novamente mais tarde"
+              );
             });
         }
       };
