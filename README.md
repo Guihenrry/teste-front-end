@@ -1,24 +1,25 @@
-# teste-front-end
+# Teste Front End
 
-## Project setup
+## Instruções para executar o projeto
+
+### Baixe o projeto
+
+```
+git clone https://github.com/Guihenrry/teste-front-end.git
+```
+
+### Baixe as dependências
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compilar e gerar servidor de desenvolvimento
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Observações
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Para executar o projeto é preciso da api_key que você pode alterar no arquivo src/services.js
