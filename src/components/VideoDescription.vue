@@ -41,7 +41,8 @@ export default {
     },
     resumeDescription() {
       const arrayLine = this.descriptionLineBreakHTML.split("<br>");
-      if (arrayLine.length === 3) return "";
+      console.log(arrayLine);
+      if (arrayLine.length <= 3) return "";
 
       const resumeArrayLine = arrayLine.splice(0, 3);
       return resumeArrayLine.join("<br>");
